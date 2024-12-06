@@ -9,18 +9,20 @@
     {% endif %}
 {% endif %}
 
+<h1>Prijava</h1>
+
 <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
-    <table>
-      <tr>
-        <td>{{ form.username.label_tag }}</td>
-        <td>{{ form.username }}</td>
-      </tr>
-      <tr>
-        <td>{{ form.password.label_tag }}</td>
-        <td>{{ form.password }}</td>
-      </tr>
-    </table>
-    <input type="submit" value="login" />
+    <p>
+      <label>Korisničko ime:</label><br>
+      {{ form.username }}
+    </p>
+      
+    <p>
+      <label>Lozinka:</label><br>
+      {{ form.password }}
+    </p>
+
+    <input type="submit" value="Prijava" />
     <input type="hidden" name="next" value="{{ next }}" />
 </form>

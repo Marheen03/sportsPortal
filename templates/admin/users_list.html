@@ -1,0 +1,23 @@
+{% block content %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <h2>Popis korisnika</h2>
+
+    <form action="createUser">
+        <input type="submit" value="Dodaj korisnika" />
+    </form>
+
+    <table>
+        {% for user in object_list %}
+            <tr>
+                <td>Name: {{ user.username }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

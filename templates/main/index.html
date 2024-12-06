@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Sportski portal</title>
 </head>
 <body>
     <h1>This is our homepage</h1>
@@ -13,7 +13,11 @@
         <form id="logout-form" method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit">Odjava</button>
-        </form>   
+        </form>
+        
+        {% if request.user.is_superuser %}
+            <p><a href="adminDashboard/" class="button">Admin dashboard</a></p>
+        {% endif %}   
     {% else %}
         <p>Niste prijavljeni.</p>
         <p><a href="{% url 'login' %}?next={{ request.path }}">Prijava</a></p>
