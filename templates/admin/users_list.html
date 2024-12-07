@@ -1,4 +1,8 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 {% block content %}
+    <h2>Popis korisnika</h2>
+
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -7,16 +11,38 @@
     </ul>
     {% endif %}
 
-    <h2>Popis korisnika</h2>
-
     <form action="createUser">
         <input type="submit" value="Dodaj korisnika" />
     </form>
 
     <table>
+        <th>Korisničko ime</th>
+        <th>Vrsta</th>
+        <th colspan="2">Akcije</th>
+
         {% for user in object_list %}
             <tr>
-                <td>Name: {{ user.username }}</td>
+                <td>{{ user.username }}</td>
+                <td>
+                    {% for group in user.groups.all %}
+                        {{ group.name }}
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{% url 'editUser' user.id %}">
+                        <i class="fa fa-edit" title="Ažuriraj korisnika"></i>
+                    </a>
+                </td>
+                {% if user.id != request.user.id %}
+                <td>
+                    <a
+                        href="{% url 'deleteUser' user.id %}"
+                        onclick="return confirm('Jeste li sigurni da želite obrisati korisnika {{ user.username }}?');"
+                    >
+                        <i class="fa fa-trash-o" stlye="color:red" title="Izbriši korisnika"></i>
+                    </a>
+                </td>
+                {% endif %}
             </tr>
         {% endfor %}
     </table>
