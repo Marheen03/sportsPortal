@@ -46,6 +46,11 @@ def createUser(request):
             )
                     
             user_type = form.cleaned_data['vrsta_korisnika']
+            if (user_type == 'Administrator'):
+                new_user.is_superuser = True
+                new_user.is_staff = True
+                new_user.save()
+            
             group = Group.objects.get(name=user_type)
             new_user.groups.add(group)
 
@@ -85,7 +90,7 @@ def deleteUser(request, userID):
     user = User.objects.get(id=userID)
     try:
         user.delete()
-        messages.success(request, 'Korisnik "{}" je supješno obrisan!'.format(user.username))
+        messages.success(request, 'Korisnik "{}" je uspješno obrisan!'.format(user.username))
         return redirect('usersList')
     except User.DoesNotExist:
         return redirect('usersList')

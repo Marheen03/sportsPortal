@@ -1,24 +1,24 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% extends "base_generic.html" %}
 
 {% block content %}
-    <h2>Popis korisnika</h2>
+    <h1>Popis korisnika</h1>
 
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
+            <div class="{{ message.tags }}">{{ message }}</div>
         {% endfor %}
     </ul>
     {% endif %}
 
     <form action="createUser">
-        <input type="submit" value="Dodaj korisnika" />
+        <input type="submit" value="Dodaj korisnika   &#43;" class="addButton"/>
     </form>
 
     <table>
         <th>Korisničko ime</th>
         <th>Vrsta</th>
-        <th colspan="2">Akcije</th>
+        <th>Akcije</th>
 
         {% for user in object_list %}
             <tr>
@@ -30,19 +30,18 @@
                 </td>
                 <td>
                     <a href="{% url 'editUser' user.id %}">
-                        <i class="fa fa-edit" title="Ažuriraj korisnika"></i>
+                        <i class="fa fa-edit" style="font-size: 24px; color:black; margin-left: 30%;" title="Ažuriraj korisnika"></i>
                     </a>
+    
+                    {% if user.id != request.user.id %}
+                        <a
+                            href="{% url 'deleteUser' user.id %}"
+                            onclick="return confirm('Jeste li sigurni da želite obrisati korisnika {{ user.username }}?');"
+                        >
+                            <i class="fa fa-trash-o" style="font-size: 24px; color:red; margin-left: 10%;" title="Izbriši korisnika"></i>
+                        </a>
+                    {% endif %}
                 </td>
-                {% if user.id != request.user.id %}
-                <td>
-                    <a
-                        href="{% url 'deleteUser' user.id %}"
-                        onclick="return confirm('Jeste li sigurni da želite obrisati korisnika {{ user.username }}?');"
-                    >
-                        <i class="fa fa-trash-o" stlye="color:red" title="Izbriši korisnika"></i>
-                    </a>
-                </td>
-                {% endif %}
             </tr>
         {% endfor %}
     </table>

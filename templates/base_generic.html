@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>SportsPortal</title>
+</head>
+
+<body>
+    <ul>
+        <li><a href="/" title="Početna stranica"><i class="fa fa-home"></i></a></li>
+
+        {% if request.user.is_superuser %}
+            <li><a href="/adminDashboard/">Administracija</a></li>
+        {% endif %}
+
+        <li style="float:right">
+            <form id="logout-form" method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Odjava</button>
+            </form>
+        </li>
+    </ul>
+
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

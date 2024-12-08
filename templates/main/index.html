@@ -1,26 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Sportski portal</title>
-</head>
-<body>
-    <h1>This is our homepage</h1>
+{% extends "base_generic.html" %}
 
-    {% if user.is_authenticated %}
-        <p>Vaše ime: {{ user.username }}</p>
+{% block content %}
+    <h1>Početna stranica</h1>
 
-        <form id="logout-form" method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit">Odjava</button>
-        </form>
-        
-        {% if request.user.is_superuser %}
-            <p><a href="adminDashboard/" class="button">Admin dashboard</a></p>
-        {% endif %}   
-    {% else %}
-        <p>Niste prijavljeni.</p>
-        <p><a href="{% url 'login' %}?next={{ request.path }}">Prijava</a></p>
-    {% endif %}
-</body>
-</html>
+    <p>Korisničko ime: {{ user.username }}</p>
+{% endblock %}

@@ -1,16 +1,18 @@
+{% extends "base_generic.html" %}
+
 {% block content %}
-    <h2>{% if form_action == 'edit' %}
+    <h1>{% if form_action == 'edit' %}
         Ažuriraj korisnika
     {% else %}
         Dodaj korisnika
-    {% endif %}</h2>
+    {% endif %}</h1>
 
     {% if messages %}
-    <ul class="messages">
+    <div class="messages">
         {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
+            <div class="{{ message.tags }}">{{ message }}</div>
         {% endfor %}
-    </ul>
+    </div>
     {% endif %}
 
     <form action="{% if form_action == 'edit' %} {% url 'editUser' userID %} {% else %} {% url 'createUser' %} {% endif %}" method="post">
