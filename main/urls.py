@@ -1,9 +1,9 @@
 from django.urls import path
 from . import views
-from main.views import UsersList
+from main.views import UsersList, LatestMatches
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', LatestMatches.as_view(), name='index'),
     
     path('adminDashboard/', UsersList.as_view(), name='usersList'),
     path('adminDashboard/createUser', views.createUser, name='createUser'),

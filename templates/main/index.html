@@ -1,7 +1,19 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>Početna stranica</h1>
+    <h1>SportsPortal</h1>
 
-    <p>Korisničko ime: {{ user.username }}</p>
+    {% for match in object_list %}
+        <a href="#">
+            <div>
+                <p> {{ match.match_date }} </p>
+                
+                  <p>
+                    {{ match.match_team1 }} {{ match.match_score1 }}
+                    -
+                    {{ match.match_score2 }} {{ match.match_team2 }}
+                  </p>  
+            </div>
+        </a>
+    {% endfor %}
 {% endblock %}

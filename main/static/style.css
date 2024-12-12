@@ -20,6 +20,7 @@ ul {
     left: 0;
     overflow: hidden;
     background-color: #4CAF50;
+    color: white;
 }
   
 li {
@@ -39,12 +40,19 @@ li a:hover {
     background-color: #038037;
 }
 
+.userProfile {
+    padding: 14px 16px;
+    border: none;
+    margin-right: 5px;
+}
+
 #logout-form {
     background: #4CAF50 !important;
     padding: 0 !important;
 }
 
 #logout-form button {
+    font-size: 14px;
     color: white;
     background: #038037 !important;
     padding: 14px 16px !important;

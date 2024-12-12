@@ -1,20 +1,23 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import user_passes_test
 from django.views.generic import ListView
 from django.contrib.auth.models import User, Group
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from . import forms
+from main.models import *
 
 def is_user_admin(user):
     admin_group = Group.objects.get(name="Administrator") 
     return admin_group.user_set.filter(username=user).exists()
 
 
-@login_required
-def index(request):
-    return render(request, 'main/index.html')
+class LatestMatches(LoginRequiredMixin, ListView):
+    template_name = 'main/index.html'
+
+    def get_queryset(self):
+        return Match.objects.order_by('-match_date')[:5]
 
 
 # gets all users

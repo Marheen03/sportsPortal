@@ -8,7 +8,7 @@ class Team(models.Model):
     team_country = models.CharField(max_length=30)
 
     def __str__(self):
-        return '{}, {}'.format(self.team_name, self.team_country)
+        return '{}'.format(self.team_name)
     
 
 class Competition(models.Model):
