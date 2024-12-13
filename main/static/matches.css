@@ -1,0 +1,72 @@
+.description {
+    font-size: 20px;
+    margin-top: 6%;
+}
+
+.match {
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #aaaaaa;
+    margin-top: 3%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 18px;
+}
+
+.match_date, .match_competition, .score {
+    width: 100%;
+    text-align: center;
+}
+
+.match_competition {
+    font-size: 20px;
+}
+
+.score {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.score span, .score_details span {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.match_link:link {
+    text-decoration: none;
+    color: black;
+    background: none;
+}
+
+.match_link div:hover {
+    background: #e1edd1;
+}
+
+.match_link:visited {
+    color: black;
+}
+
+
+.score_details {
+    font-size: 35px;
+    margin-top: 10%;
+    margin-bottom: 5%;
+}
+
+.match_details {
+    font-size: 20px;
+}
+
+.match_details b {
+    font-size: 25px;
+    margin-left: 3%;
+}
+
+.score_details a:link, .match_details a:link, h2 a:link {
+    text-decoration: none;
+    color: #4CAF50;
+}
+
+.score_details a:hover, .match_details a:hover, h2 a:hover {
+    color: black;
+}

@@ -1,0 +1,24 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Sve utakmice</h1>
+
+    {% for competition, matches in grouped_matches.items %}
+        <h2><a href="competitions/{{ competition.id }} ">{{ competition }}</a></h2>
+
+        {% for match in matches %}
+            <a href="/match/{{ match.id }}" class="match_link">
+                <div class="match">
+                    <p class="match_date">{{ match.match_date|date:"d. m. Y., H:i" }}</p>
+                    <p class="score">
+                        {{ match.match_team1 }}
+                        <span>
+                            {{ match.match_score1 }} - {{ match.match_score2 }}
+                        </span>
+                        {{ match.match_team2 }}
+                    </p>
+                </div>
+            </a>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}

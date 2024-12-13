@@ -1,10 +1,11 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import user_passes_test
-from django.views.generic import ListView
+from django.contrib.auth.decorators import user_passes_test, login_required
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
+from itertools import groupby
 from . import forms
 from main.models import *
 
@@ -17,7 +18,7 @@ class LatestMatches(LoginRequiredMixin, ListView):
     template_name = 'main/index.html'
 
     def get_queryset(self):
-        return Match.objects.order_by('-match_date')[:5]
+        return Match.objects.order_by('-match_date')[:7]
 
 
 # gets all users
@@ -97,3 +98,18 @@ def deleteUser(request, userID):
         return redirect('usersList')
     except User.DoesNotExist:
         return redirect('usersList')
+
+
+class MatchDetailed(LoginRequiredMixin, DetailView):
+    model = Match
+    template_name = 'main/matchDetail.html'
+
+
+@login_required
+def AllMatches(request):
+    matches = Match.objects.order_by('match_competition', '-match_date')
+    grouped_matches = {
+        competition: list(matches) 
+        for competition, matches in groupby(matches, key=lambda x: x.match_competition)
+    }
+    return render(request, 'main/matches.html', {'grouped_matches': grouped_matches})

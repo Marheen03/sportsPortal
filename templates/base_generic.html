@@ -3,6 +3,7 @@
 <head>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'matches.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>SportsPortal</title>
 </head>
@@ -10,6 +11,9 @@
 <body>
     <ul>
         <li><a href="/" title="Početna stranica"><i class="fa fa-home"></i></a></li>
+        <li><a href="/matches/">Utakmice</a></li>
+        <li><a href="/teams/">Momčadi</a></li>
+        <li><a href="/competitions/">Natjecanja</a></li>
 
         {% if request.user.is_superuser %}
             <li><a href="/adminDashboard/">Administracija</a></li>
