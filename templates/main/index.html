@@ -5,23 +5,27 @@
 
     <p class="description">Najnovije utakmice:</p>
 
-    {% for match in object_list %}
-        <a href="/match/{{ match.id }}" class="match_link">
-            <div class="match">
-                <p class="match_date"> {{ match.match_date|date:"d. m. Y., H:i" }} </p>
-                
-                <p class="score">
-                    {{ match.match_team1 }} 
+    {% if object_list %}
+        {% for match in object_list %}
+            <a href="/matches/{{ match.id }}" class="match_link">
+                <div class="match">
+                    <p class="match_date"> {{ match.match_date|date:"d. m. Y., H:i" }} </p>
+                    
+                    <p class="score">
+                        {{ match.match_team1 }} 
 
-                <span>
-                    {{ match.match_score1 }} - {{ match.match_score2 }}
-                </span>
+                    <span>
+                        {{ match.match_score1 }} - {{ match.match_score2 }}
+                    </span>
 
-                    {{ match.match_team2 }}
-                </p>
-                
-                <p class="match_competition"> {{ match.match_competition }} </p>
-            </div>
-        </a>
-    {% endfor %}
+                        {{ match.match_team2 }}
+                    </p>
+                    
+                    <p class="match_competition"> {{ match.match_competition }} </p>
+                </div>
+            </a>
+        {% endfor %}
+    {% else %}
+        <p class="description" style="text-align: center;">Nema odigranih utakmica</p>
+    {% endif %}
 {% endblock %}

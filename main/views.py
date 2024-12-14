@@ -6,6 +6,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from itertools import groupby
+from django.db.models import Q
 from . import forms
 from main.models import *
 
@@ -21,7 +22,6 @@ class LatestMatches(LoginRequiredMixin, ListView):
         return Match.objects.order_by('-match_date')[:7]
 
 
-# gets all users
 class UsersList(UserPassesTestMixin, ListView):
     template_name = 'admin/users_list.html'
 
@@ -113,3 +113,42 @@ def AllMatches(request):
         for competition, matches in groupby(matches, key=lambda x: x.match_competition)
     }
     return render(request, 'main/matches.html', {'grouped_matches': grouped_matches})
+
+
+class AllTeams(LoginRequiredMixin, ListView):
+    template_name = 'main/teams.html'
+
+    def get_queryset(self):
+        return Team.objects.order_by('team_name')
+
+
+@login_required
+def TeamDetailed(request, pk):
+    context = {}
+    context["object"] = Team.objects.get(id = pk)
+
+    matches = Match.objects.filter(Q(match_team1__id = pk) | Q(match_team2__id = pk)).order_by('-match_date')
+    context["grouped_matches"] = {
+        competition: list(matches) 
+        for competition, matches in groupby(matches, key=lambda x: x.match_competition)
+    }
+         
+    return render(request, "main/teamDetail.html", context)
+
+
+class AllCompetitions(LoginRequiredMixin, ListView):
+    template_name = 'main/competitions.html'
+
+    def get_queryset(self):
+        return Competition.objects.order_by('competition_name')
+
+"""
+class TeamDetailed(LoginRequiredMixin, DetailView):
+    model = Team
+    template_name = 'main/teamDetail.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(TeamDetailed, self).get_context_data(*args, **kwargs)
+        context['matches_list'] = Match.objects.filter(Q(match_team1__id = self.kwargs['pk']) | Q(match_team2__id = self.kwargs['pk'])).order_by('-match_date')
+        return context
+"""

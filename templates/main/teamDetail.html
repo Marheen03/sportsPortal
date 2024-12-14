@@ -1,0 +1,57 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>{{ object.team_name }}</h1>
+
+    <p class="match_details">Država: <b>{{ object.team_country }}</b></p>
+
+    <p class="match_details">Stadion: <b>{{ object.team_stadium }}</b></p>
+
+    <br>
+    {% if grouped_matches.items %}
+    <p class="description desc1">Utakmice:</p>
+
+        {% for competition, matches in grouped_matches.items %}
+            <h2><a href="competitions/{{ competition.id }} ">{{ competition }}</a></h2>
+
+            {% for match in matches %}
+                <a href="/matches/{{ match.id }}" class="match_link">
+
+                    <div class="match"
+                    {% if match.match_team1.team_name == object.team_name %}
+                        {% if match.match_score1 > match.match_score2 %}
+                            style="border: 3px solid #4CAF50"
+                        {% elif match.match_score1 < match.match_score2 %}
+                            style="border: 3px solid #ff6161"
+                        {% else %}
+                            style="border: 3px solid yellow"
+                        {% endif %}
+                    {% else %}
+                        {% if match.match_score1 < match.match_score2 %}
+                            style="border: 3px solid #4CAF50"
+                        {% elif match.match_score1 > match.match_score2 %}
+                            style="border: 3px solid #ff6161"
+                        {% else %}
+                            style="border: 3px solid yellow"
+                        {% endif %}
+                    {% endif %}
+                    >
+                        <p class="match_date"> {{ match.match_date|date:"d. m. Y., H:i" }} </p>
+                        
+                        <p class="score">
+                            {{ match.match_team1 }} 
+
+                        <span>
+                            {{ match.match_score1 }} - {{ match.match_score2 }}
+                        </span>
+
+                            {{ match.match_team2 }}
+                        </p>
+                    </div>
+                </a>
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <p class="description" style="text-align: center;">Nema odigranih utakmica</p>
+    {% endif %}
+{% endblock %}

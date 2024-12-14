@@ -16,6 +16,11 @@ h2 {
     margin-top: 10%;
 }
 
+h3 {
+    text-align: center;
+    font-size: 25px;
+}
+
 ul {
     list-style-type: none;
     margin: 0;
@@ -78,7 +83,7 @@ li a:hover {
     display: block;
     margin: 0 auto;
     width: 60%;
-    margin-bottom: 5%;
+    margin-bottom: 8%;
 }
 
 

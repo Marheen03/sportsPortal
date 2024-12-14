@@ -3,6 +3,10 @@
     margin-top: 6%;
 }
 
+.desc1 {
+    margin-bottom: -5%;
+}
+
 .match {
     width: 100%;
     border-radius: 5px;
@@ -69,4 +73,44 @@
 
 .score_details a:hover, .match_details a:hover, h2 a:hover {
     color: black;
+}
+
+.match_details a:visited, h2 a:visited {
+    color: #4CAF50;
+}
+
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px;
+    padding: 10px;
+}
+
+.grid-container div {
+    width: auto;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.competition {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px;
+}
+
+.competition span {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.competitionName {
+    font-weight: bold;
+    font-size: 25px;
+    margin-left: 6%;
+}
+
+.competitionCountry {
+    text-align: right;
+    margin-right: 6%;
 }

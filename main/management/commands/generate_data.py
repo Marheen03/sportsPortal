@@ -8,7 +8,7 @@ from main.factory import *
 
 NUM_TEAMS = 25
 NUM_COMPETITIONS = 4
-NUM_MATCHES = 20
+NUM_MATCHES = 35
 
 class Command(BaseCommand):
     help = "Generates test data"

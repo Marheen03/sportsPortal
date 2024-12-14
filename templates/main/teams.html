@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Popis svih momčadi</h1>
+
+    <div class="grid-container">
+    {% for team in object_list %}
+        <a href="/teams/{{ team.id }}" class="match_link">
+            <div class="match">
+                <h3>{{ team.team_name }}</h3>
+                <p>{{ team.team_country }}</p>
+            </div>
+        </a>
+    {% endfor %}
+    </div>
+{% endblock %}

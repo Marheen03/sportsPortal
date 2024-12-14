@@ -4,19 +4,19 @@
     <h1>Utakmica</h1>
 
     <h2 class="score_details">
-        <a href="teams/{{ object.match_team1.id }} ">{{ object.match_team1 }} </a>
+        <a href="/teams/{{ object.match_team1.id }} ">{{ object.match_team1 }} </a>
 
         <span>
             {{ object.match_score1 }} - {{ object.match_score2 }}
         </span>
 
-        <a href="teams/{{ object.match_team2.id }} ">{{ object.match_team2 }}</a>
+        <a href="/teams/{{ object.match_team2.id }} ">{{ object.match_team2 }}</a>
     </h2>
 
     <p class="match_details">Datum: <b>{{ object.match_date|date:"d. m. Y., H:i" }}</b></p>
 
     <p class="match_details">Natjecanje:
-        <b><a href="competitions/{{ object.match_competition.id }} ">{{ object.match_competition }}</a></b>
+        <b><a href="/competitions/{{ object.match_competition.id }} ">{{ object.match_competition }}</a></b>
     </p>
 
     <p class="match_details">Stadion: <b>{{ object.match_stadium }}</b></p>
