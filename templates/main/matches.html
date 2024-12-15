@@ -5,10 +5,10 @@
 
     {% if grouped_matches.items %}
         {% for competition, matches in grouped_matches.items %}
-            <h2><a href="competitions/{{ competition.id }} ">{{ competition }}</a></h2>
+            <h2><a href="{% url 'competitionDetails' competition.id %}">{{ competition }}</a></h2>
 
             {% for match in matches %}
-                <a href="/matches/{{ match.id }}" class="match_link">
+                <a href="{% url 'matchDetails' match.id %}" class="match_link">
                     <div class="match">
                         <p class="match_date">{{ match.match_date|date:"d. m. Y., H:i" }}</p>
                         <p class="score">

@@ -4,7 +4,7 @@
     <h1>Popis svih natjecanja</h1>
 
     {% for competition in object_list %}
-    <a href="/competitions/{{ competition.id }}" class="match_link">
+    <a href="{% url 'competitionDetails' competition.id %}" class="match_link">
         <div class="match competition">
             <span class="competitionName">{{ competition.competition_name }}</span>
             <span></span>

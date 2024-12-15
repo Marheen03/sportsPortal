@@ -142,13 +142,13 @@ class AllCompetitions(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Competition.objects.order_by('competition_name')
 
-"""
-class TeamDetailed(LoginRequiredMixin, DetailView):
-    model = Team
-    template_name = 'main/teamDetail.html'
+
+class CompetitionDetailed(LoginRequiredMixin, DetailView):
+    model = Competition
+    template_name = 'main/competitionDetail.html'
 
     def get_context_data(self, *args, **kwargs):
-        context = super(TeamDetailed, self).get_context_data(*args, **kwargs)
-        context['matches_list'] = Match.objects.filter(Q(match_team1__id = self.kwargs['pk']) | Q(match_team2__id = self.kwargs['pk'])).order_by('-match_date')
+        context = super(CompetitionDetailed, self).get_context_data(*args, **kwargs)
+        context['matches_list'] = Match.objects.filter(match_competition__id = self.kwargs['pk']).order_by('-match_date')
+        context['competition_teams'] = self.object.competition_teams.all()
         return context
-"""

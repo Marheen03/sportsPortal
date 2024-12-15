@@ -1,0 +1,66 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Natjecanje: {{ object.competition_name }}</h1>
+
+    <p class="match_details">Država: <b>{{ object.competition_country }}</b></p>
+
+    <br>
+    {% if matches_list %}
+        <div class="description competition">
+            <a href="#matches" onclick="openClose(1)">Utakmice</a>
+            <span></span>
+            <a href="#teams" onclick="openClose(2)">Momčadi</a>
+        </div>
+
+        <div class="competitionMatches">
+        {% for match in matches_list %}
+            <a href="{% url 'matchDetails' match.id %}" class="match_link">
+                <div class="match">
+                    <p class="match_date"> {{ match.match_date|date:"d. m. Y., H:i" }} </p>
+                    
+                    <p class="score">
+                        {{ match.match_team1 }} 
+
+                    <span>
+                        {{ match.match_score1 }} - {{ match.match_score2 }}
+                    </span>
+
+                        {{ match.match_team2 }}
+                    </p>
+                    
+                    <p class="match_competition">Natjecanje: {{ match.match_competition }} </p>
+                </div>
+            </a>
+        {% endfor %}
+        </div>
+
+        <div class="grid-container" style="display: none;">
+        {% for team in competition_teams %}
+            <a href="{% url 'teamDetails' team.id %}" class="match_link">
+                <div class="match">
+                    <h3>{{ team.team_name }}</h3>
+                    <p>{{ team.team_country }}</p>
+                </div>
+            </a>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p class="description" style="text-align: center;">Nema odigranih utakmica</p>
+    {% endif %}
+
+    <script>
+        function openClose(x) {
+            const matches = document.getElementsByClassName("competitionMatches")[0];
+            const teams = document.getElementsByClassName("grid-container")[0];
+
+            if (x==1) {
+                matches.style.display = 'block';
+                teams.style.display = 'none';
+            } else {
+                matches.style.display = 'none';
+                teams.style.display = 'grid';
+            }
+        }
+    </script>
+{% endblock %}

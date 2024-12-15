@@ -7,7 +7,7 @@
 
     {% if object_list %}
         {% for match in object_list %}
-            <a href="/matches/{{ match.id }}" class="match_link">
+            <a href="{% url 'matchDetails' match.id %}" class="match_link">
                 <div class="match">
                     <p class="match_date"> {{ match.match_date|date:"d. m. Y., H:i" }} </p>
                     
@@ -21,7 +21,7 @@
                         {{ match.match_team2 }}
                     </p>
                     
-                    <p class="match_competition"> {{ match.match_competition }} </p>
+                    <p class="match_competition">Natjecanje: {{ match.match_competition }} </p>
                 </div>
             </a>
         {% endfor %}

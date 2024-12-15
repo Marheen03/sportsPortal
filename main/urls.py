@@ -15,4 +15,5 @@ urlpatterns = [
     path('teams/', AllTeams.as_view(), name='allTeams'),
     path('teams/<pk>', views.TeamDetailed, name='teamDetails'),
     path('competitions/', AllCompetitions.as_view(), name='allCompetitions'),
+    path('competitions/<pk>', CompetitionDetailed.as_view(), name='competitionDetails'),
 ]

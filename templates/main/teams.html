@@ -5,7 +5,7 @@
 
     <div class="grid-container">
     {% for team in object_list %}
-        <a href="/teams/{{ team.id }}" class="match_link">
+        <a href="{% url 'teamDetails' team.id %}" class="match_link">
             <div class="match">
                 <h3>{{ team.team_name }}</h3>
                 <p>{{ team.team_country }}</p>

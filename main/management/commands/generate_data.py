@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 from main.models import *
 from main.factory import *
 
-NUM_TEAMS = 25
+NUM_TEAMS = 20
 NUM_COMPETITIONS = 4
 NUM_MATCHES = 35
 

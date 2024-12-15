@@ -30,7 +30,7 @@ class CompetitionFactory(DjangoModelFactory):
                 self.competition_teams.add(team)
         else:
             # If no teams were passed in, create some default teams and associate them
-            teams = TeamFactory.create_batch(5)  # Create 3 teams, change the number as needed
+            teams = TeamFactory.create_batch(2)  # Create 2 teams
             for team in teams:
                 self.competition_teams.add(team)
 
@@ -43,19 +43,18 @@ class MatchFactory(DjangoModelFactory):
     match_stadium = factory.Faker("sentence", nb_words=3)
     match_competition = factory.Iterator(Competition.objects.all())
 
-    # Ensure that match_team1 and match_team2 are different using random sample
     @factory.lazy_attribute
     def match_team1(self):
-        # Select a random team from Team model
-        return random.choice(Team.objects.all())
+        # Select a random team that is part of the match_competition
+        competition_teams = Team.objects.filter(competition=self.match_competition)
+        return random.choice(competition_teams)
 
     @factory.lazy_attribute
     def match_team2(self):
-        # Ensure match_team2 is different from match_team1
         team1 = self.match_team1
-        # Use random.sample to pick a team different from match_team1
-        team2 = random.choice(Team.objects.exclude(id=team1.id))
-        return team2
+        # Pick a different team from the same competition
+        competition_teams = Team.objects.filter(competition=self.match_competition).exclude(id=team1.id)
+        return random.choice(competition_teams)
     
     match_score1 = factory.Faker('random_int', min=0, max=4)
     match_score2 = factory.Faker('random_int', min=0, max=4)
