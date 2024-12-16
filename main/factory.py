@@ -45,16 +45,15 @@ class MatchFactory(DjangoModelFactory):
 
     @factory.lazy_attribute
     def match_team1(self):
-        # Select a random team that is part of the match_competition
-        competition_teams = Team.objects.filter(competition=self.match_competition)
-        return random.choice(competition_teams)
-
+        # select a random team from Team model
+        return random.choice(Team.objects.all())
+    
     @factory.lazy_attribute
     def match_team2(self):
         team1 = self.match_team1
-        # Pick a different team from the same competition
-        competition_teams = Team.objects.filter(competition=self.match_competition).exclude(id=team1.id)
-        return random.choice(competition_teams)
+        # pick a team different from match_team1
+        team2 = random.choice(Team.objects.exclude(id=team1.id))
+        return team2
     
     match_score1 = factory.Faker('random_int', min=0, max=4)
     match_score2 = factory.Faker('random_int', min=0, max=4)

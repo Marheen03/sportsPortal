@@ -3,13 +3,27 @@
 {% block content %}
     <h1>Popis svih natjecanja</h1>
 
-    {% for competition in object_list %}
-    <a href="{% url 'competitionDetails' competition.id %}" class="match_link">
-        <div class="match competition">
-            <span class="competitionName">{{ competition.competition_name }}</span>
-            <span></span>
-            <span class="competitionCountry">{{ competition.competition_country }}</span>
-        </div>
-    </a>
-    {% endfor %}
+    <form class="searchOption" method="get" action="{% url 'allCompetitions' %}">
+        <input 
+            type="text"
+            name="search"
+            placeholder="Pretraga..."
+            value="{{ search_query }}"
+        >
+        <button type="submit">Traži</button>
+    </form>
+
+    {% if object_list %}
+        {% for competition in object_list %}
+        <a href="{% url 'competitionDetails' competition.id %}" class="match_link">
+            <div class="match competition">
+                <span class="competitionName">{{ competition.competition_name }}</span>
+                <span></span>
+                <span class="competitionCountry">{{ competition.competition_country }}</span>
+            </div>
+        </a>
+        {% endfor %}
+    {% else %}
+        <p class="description" style="text-align: center;">Nema natjecanja</p>
+    {% endif %}
 {% endblock %}

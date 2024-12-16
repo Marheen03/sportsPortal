@@ -3,14 +3,28 @@
 {% block content %}
     <h1>Popis svih momčadi</h1>
 
-    <div class="grid-container">
-    {% for team in object_list %}
-        <a href="{% url 'teamDetails' team.id %}" class="match_link">
-            <div class="match">
-                <h3>{{ team.team_name }}</h3>
-                <p>{{ team.team_country }}</p>
-            </div>
-        </a>
-    {% endfor %}
-    </div>
+    <form class="searchOption" method="get" action="{% url 'allTeams' %}">
+        <input 
+            type="text"
+            name="search"
+            placeholder="Pretraga..."
+            value="{{ search_query }}"
+        >
+        <button type="submit">Traži</button>
+    </form>
+
+    {% if object_list %}
+        <div class="grid-container">
+        {% for team in object_list %}
+            <a href="{% url 'teamDetails' team.id %}" class="match_link">
+                <div class="match">
+                    <h3>{{ team.team_name }}</h3>
+                    <p>{{ team.team_country }}</p>
+                </div>
+            </a>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p class="description" style="text-align: center;">Nema momčadi</p>
+    {% endif %}
 {% endblock %}

@@ -7,6 +7,26 @@
     margin-bottom: -5%;
 }
 
+.searchGrid {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 10px;
+}
+
+.searchGrid form {
+    margin-top: -3%;
+}
+
+.searchOption input {
+    width: 75%;
+    margin-right: 3%;
+}
+
+.searchOption button {
+    width: fit-content;
+}
+
+
 .match {
     width: 100%;
     border-radius: 5px;

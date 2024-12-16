@@ -11,9 +11,21 @@
     </ul>
     {% endif %}
 
-    <form action="createUser">
-        <input type="submit" value="Dodaj korisnika   &#43;" class="addButton"/>
-    </form>
+    <div class="searchGrid">
+        <form action="createUser">
+            <input type="submit" value="Dodaj korisnika   &#43;" class="addButton"/>
+        </form>
+
+        <form class="searchOption" method="get" action="{% url 'usersList' %}">
+            <input 
+                type="text"
+                name="search"
+                placeholder="Pretraga..."
+                value="{{ search_query }}"
+            >
+            <button type="submit">Traži</button>
+        </form>
+    </div>
 
     <table>
         <th>Korisničko ime</th>

@@ -3,6 +3,16 @@
 {% block content %}
     <h1>Popis svih utakmica</h1>
 
+    <form class="searchOption" method="get" action="{% url 'allMatches' %}" style="margin-bottom: -3%;">
+        <input 
+            type="text"
+            name="search"
+            placeholder="Pretraga..."
+            value="{{ search_query }}"
+        >
+        <button type="submit">Traži</button>
+    </form>
+
     {% if grouped_matches.items %}
         {% for competition, matches in grouped_matches.items %}
             <h2><a href="{% url 'competitionDetails' competition.id %}">{{ competition }}</a></h2>

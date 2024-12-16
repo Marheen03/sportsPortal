@@ -3,7 +3,19 @@
 {% block content %}
     <h1>SportsPortal</h1>
 
-    <p class="description">Najnovije utakmice:</p>
+    <div class="searchGrid">
+        <p class="description">Najnovije utakmice:</p>
+
+        <form class="searchOption" method="get" action="{% url 'index' %}">
+            <input 
+                type="text"
+                name="search"
+                placeholder="Pretraga..."
+                value="{{ search_query }}"
+            >
+            <button type="submit">Traži</button>
+        </form>
+    </div>
 
     {% if object_list %}
         {% for match in object_list %}

@@ -10,6 +10,7 @@ from django.db.models import Q
 from . import forms
 from main.models import *
 
+
 def is_user_admin(user):
     admin_group = Group.objects.get(name="Administrator") 
     return admin_group.user_set.filter(username=user).exists()
@@ -19,7 +20,23 @@ class LatestMatches(LoginRequiredMixin, ListView):
     template_name = 'main/index.html'
 
     def get_queryset(self):
-        return Match.objects.order_by('-match_date')[:7]
+        queryset = Match.objects.order_by('-match_date')
+        search_query = self.request.GET.get('search', '')
+
+        if search_query:  # user submitted search form
+            queryset = queryset.filter(
+                Q(match_team1__team_name__icontains = search_query) |
+                Q(match_team2__team_name__icontains = search_query) |
+                Q(match_competition__competition_name__icontains = search_query)
+            )[:5]
+        else:
+            queryset = queryset[:7]
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('search', '')
+        return context
 
 
 class UsersList(UserPassesTestMixin, ListView):
@@ -29,7 +46,19 @@ class UsersList(UserPassesTestMixin, ListView):
         return self.request.user.groups.filter(name="Administrator").exists()
 
     def get_queryset(self):
-        return User.objects.all()
+        queryset = User.objects.all()
+        search_query = self.request.GET.get('search', '')
+
+        if search_query:  # user submitted search form
+            queryset = queryset.filter(
+                username__icontains = search_query
+            )
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('search', '')
+        return context
 
 
 @user_passes_test(is_user_admin)
@@ -100,14 +129,18 @@ def deleteUser(request, userID):
         return redirect('usersList')
 
 
-class MatchDetailed(LoginRequiredMixin, DetailView):
-    model = Match
-    template_name = 'main/matchDetail.html'
-
-
 @login_required
 def AllMatches(request):
     matches = Match.objects.order_by('match_competition', '-match_date')
+    search_query = request.GET.get('search', '')
+
+    if search_query:  # user submitted search form
+        matches = matches.filter(
+            Q(match_team1__team_name__icontains = search_query) |
+            Q(match_team2__team_name__icontains = search_query) |
+            Q(match_competition__competition_name__icontains = search_query)
+    )
+
     grouped_matches = {
         competition: list(matches) 
         for competition, matches in groupby(matches, key=lambda x: x.match_competition)
@@ -115,11 +148,28 @@ def AllMatches(request):
     return render(request, 'main/matches.html', {'grouped_matches': grouped_matches})
 
 
+class MatchDetailed(LoginRequiredMixin, DetailView):
+    model = Match
+    template_name = 'main/matchDetail.html'
+
+
 class AllTeams(LoginRequiredMixin, ListView):
     template_name = 'main/teams.html'
 
     def get_queryset(self):
-        return Team.objects.order_by('team_name')
+        queryset = Team.objects.order_by('team_name')
+        search_query = self.request.GET.get('search', '')
+
+        if search_query:  # user submitted search form
+            queryset = queryset.filter(
+                team_name__icontains = search_query
+            )
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('search', '')
+        return context
 
 
 @login_required
@@ -127,7 +177,11 @@ def TeamDetailed(request, pk):
     context = {}
     context["object"] = Team.objects.get(id = pk)
 
-    matches = Match.objects.filter(Q(match_team1__id = pk) | Q(match_team2__id = pk)).order_by('-match_date')
+    matches = Match.objects.filter(
+        Q(match_team1__id = pk) | 
+        Q(match_team2__id = pk)
+    ).order_by('-match_date')
+
     context["grouped_matches"] = {
         competition: list(matches) 
         for competition, matches in groupby(matches, key=lambda x: x.match_competition)
@@ -140,7 +194,19 @@ class AllCompetitions(LoginRequiredMixin, ListView):
     template_name = 'main/competitions.html'
 
     def get_queryset(self):
-        return Competition.objects.order_by('competition_name')
+        queryset = Competition.objects.order_by('competition_name')
+        search_query = self.request.GET.get('search', '')
+
+        if search_query:  # user submitted search form
+            queryset = queryset.filter(
+                competition_name__icontains = search_query
+            )
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('search', '')
+        return context
 
 
 class CompetitionDetailed(LoginRequiredMixin, DetailView):
