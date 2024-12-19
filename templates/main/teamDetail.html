@@ -3,9 +3,34 @@
 {% block content %}
     <h1>Momčad: {{ object.team_name }}</h1>
 
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <div class="{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <p class="match_details">Država: <b>{{ object.team_country }}</b></p>
 
     <p class="match_details">Stadion: <b>{{ object.team_stadium }}</b></p>
+
+    {% if request.user.is_superuser %}
+    <p class="match_details">
+        <a href="{% url 'editTeam' object.id %}">
+            <i class="fa fa-edit" style="font-size: 30px; color:black;"></i>
+            Uredi podatke
+        </a>
+    </p>
+
+    <p class="match_details">
+        <a href="{% url 'deleteTeam' object.id %}"
+            onclick="return confirm('Jeste li sigurni da želite obrisati momčad {{ object.team_name }}?');"
+        >
+            <i class="fa fa-trash-o" style="font-size: 30px; color:red;"></i>
+        </a>
+    </p>
+    {% endif %}
 
     <br>
     {% if grouped_matches.items %}

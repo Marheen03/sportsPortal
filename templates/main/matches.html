@@ -3,6 +3,14 @@
 {% block content %}
     <h1>Popis svih utakmica</h1>
 
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <div class="{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <form class="searchOption" method="get" action="{% url 'allMatches' %}" style="margin-bottom: -3%;">
         <input 
             type="text"

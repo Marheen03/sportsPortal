@@ -10,7 +10,6 @@ from django.db.models import Q
 from . import forms
 from main.models import *
 
-
 def is_user_admin(user):
     admin_group = Group.objects.get(name="Administrator") 
     return admin_group.user_set.filter(username=user).exists()
@@ -64,10 +63,10 @@ class UsersList(UserPassesTestMixin, ListView):
 @user_passes_test(is_user_admin)
 def createUser(request):
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
+        # create a form instance
         form = forms.UserFormCreate(request.POST)
 
-        # check whether it's valid:
+        # check whether it's valid
         if form.is_valid():
             # process the data in form.cleaned_data as required
             user_name = form.cleaned_data['username']
@@ -129,6 +128,7 @@ def deleteUser(request, userID):
         return redirect('usersList')
 
 
+
 @login_required
 def AllMatches(request):
     matches = Match.objects.order_by('match_competition', '-match_date')
@@ -151,6 +151,60 @@ def AllMatches(request):
 class MatchDetailed(LoginRequiredMixin, DetailView):
     model = Match
     template_name = 'main/matchDetail.html'
+
+
+
+@user_passes_test(is_user_admin)
+def createTeam(request):
+    if request.method == 'POST':
+        # create a form instance
+        form = forms.TeamForm(request.POST)
+
+        # check whether it's valid:
+        if form.is_valid():
+            team_name = form.cleaned_data['team_name']
+            form.save()
+
+            # add a success message
+            messages.success(request, 'Momčad "{}" je uspješno dodana!'.format(team_name))
+            return HttpResponseRedirect("/teams")
+    else:
+        form = forms.TeamForm()
+    
+    return render(request, 'admin/team_form.html', {'form': form, 'form_action': 'create'})
+
+
+@user_passes_test(is_user_admin)
+def editTeam(request, teamID):
+    team = Team.objects.get(id=teamID)
+
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request
+        form = forms.TeamForm(request.POST, instance=team)
+
+        if form.is_valid():
+            team_name = form.cleaned_data['team_name']
+            form.save()
+
+            # add a success message
+            messages.success(request, 'Momčad "{}" je uspješno ažurirana!'.format(team_name))
+            return HttpResponseRedirect("/teams")
+    else:
+        # populate the form with the chosen team's data
+        form = forms.TeamForm(instance=team)
+    
+    return render(request, 'admin/team_form.html', {'form': form, 'form_action': 'edit', 'teamID': team.id})
+
+
+@user_passes_test(is_user_admin)
+def deleteTeam(request, teamID):
+    team = Team.objects.get(id=teamID)
+    try:
+        team.delete()
+        messages.success(request, 'Momčad "{}" je uspješno obrisan!'.format(team.team_name))
+        return redirect('allTeams')
+    except Team.DoesNotExist:
+        return redirect('allTeams')
 
 
 class AllTeams(LoginRequiredMixin, ListView):
@@ -188,6 +242,7 @@ def TeamDetailed(request, pk):
     }
          
     return render(request, "main/teamDetail.html", context)
+
 
 
 class AllCompetitions(LoginRequiredMixin, ListView):

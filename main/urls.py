@@ -12,8 +12,13 @@ urlpatterns = [
 
     path('matches/', views.AllMatches, name='allMatches'),
     path('matches/<pk>', MatchDetailed.as_view(), name='matchDetails'),
+
     path('teams/', AllTeams.as_view(), name='allTeams'),
+    path('teams/create', views.createTeam, name='createTeam'),
     path('teams/<pk>', views.TeamDetailed, name='teamDetails'),
+    path('teams/edit/<teamID>', views.editTeam, name='editTeam'),
+    path('teams/delete/<teamID>', views.deleteTeam, name='deleteTeam'),
+
     path('competitions/', AllCompetitions.as_view(), name='allCompetitions'),
     path('competitions/<pk>', CompetitionDetailed.as_view(), name='competitionDetails'),
 ]

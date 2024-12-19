@@ -3,15 +3,32 @@
 {% block content %}
     <h1>Popis svih momčadi</h1>
 
-    <form class="searchOption" method="get" action="{% url 'allTeams' %}">
-        <input 
-            type="text"
-            name="search"
-            placeholder="Pretraga..."
-            value="{{ search_query }}"
-        >
-        <button type="submit">Traži</button>
-    </form>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <div class="{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="grid-container">
+        {% if request.user.is_superuser %}
+            <form action="{% url 'createTeam' %}">
+                <input type="submit" value="Dodaj momčad   &#43;" class="addButton"/>
+            </form>
+        {% endif %}
+        
+        <span></span>
+        <form class="searchOption" method="get" action="{% url 'allTeams' %}">
+            <input 
+                type="text"
+                name="search"
+                placeholder="Pretraga..."
+                value="{{ search_query }}"
+            >
+            <button type="submit">Traži</button>
+        </form>
+    </div>
 
     {% if object_list %}
         <div class="grid-container">

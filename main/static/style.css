@@ -114,6 +114,11 @@ input[type=submit], .searchOption button {
     border-radius: 4px;
     cursor: pointer;
 }
+
+form textarea {
+    display: block;
+    margin-top: 1%;
+}
   
 input[type=submit]:hover {
     background-color: #038037;
@@ -126,7 +131,7 @@ input[type=submit]:hover {
     text-align: center;
     font-size: 20px;
     display: block;
-    margin-top: 15%;
+    margin-top: 5%;
     list-style-type: none;
 }
 

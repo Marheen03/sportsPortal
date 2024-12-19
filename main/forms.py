@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import *
 
 USER_TYPES = {
     "Administrator": "Administrator",
@@ -29,4 +30,15 @@ class UserFormEdit(forms.ModelForm):
         }
         help_texts = {
             'username': None
+        }
+
+
+class TeamForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        fields = ['team_name', 'team_stadium', 'team_country']
+        labels = {
+            'team_name': 'Naziv momčadi',
+            'team_stadium': 'Naziv stadiona',
+            'team_country': 'Država'
         }
