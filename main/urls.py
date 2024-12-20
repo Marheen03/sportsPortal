@@ -20,5 +20,8 @@ urlpatterns = [
     path('teams/delete/<teamID>', views.deleteTeam, name='deleteTeam'),
 
     path('competitions/', AllCompetitions.as_view(), name='allCompetitions'),
+    path('competitions/create', views.createCompetition, name='createCompetition'),
     path('competitions/<pk>', CompetitionDetailed.as_view(), name='competitionDetails'),
+    path('competitions/edit/<competitionID>', views.editCompetition, name='editCompetition'),
+    path('competitions/delete/<competitionID>', views.deleteCompetition, name='deleteCompetition'),
 ]

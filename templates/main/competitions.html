@@ -11,15 +11,23 @@
     </ul>
     {% endif %}
 
-    <form class="searchOption" method="get" action="{% url 'allCompetitions' %}">
-        <input 
-            type="text"
-            name="search"
-            placeholder="Pretraga..."
-            value="{{ search_query }}"
-        >
-        <button type="submit">Traži</button>
-    </form>
+    <div class="grid-container">
+        {% if request.user.is_superuser %}
+            <form action="{% url 'createCompetition' %}">
+                <input type="submit" value="Dodaj natjecanje   &#43;" class="addButton"/>
+            </form>
+        {% endif %}
+        <span></span>
+        <form class="searchOption" method="get" action="{% url 'allCompetitions' %}">
+            <input 
+                type="text"
+                name="search"
+                placeholder="Pretraga..."
+                value="{{ search_query }}"
+            >
+            <button type="submit">Traži</button>
+        </form>
+    </div>
 
     {% if object_list %}
         {% for competition in object_list %}

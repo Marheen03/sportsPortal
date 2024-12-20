@@ -18,6 +18,7 @@ class UserFormCreate(forms.ModelForm):
         help_texts = {
             'username': None
         }
+    
     vrsta_korisnika = forms.ChoiceField(choices=USER_TYPES)
 
 class UserFormEdit(forms.ModelForm):
@@ -42,3 +43,18 @@ class TeamForm(forms.ModelForm):
             'team_stadium': 'Naziv stadiona',
             'team_country': 'Država'
         }
+
+class CompetitionForm(forms.ModelForm):
+    class Meta:
+        model = Competition
+        fields = ['competition_name', 'competition_country']
+        labels = {
+            'competition_name': 'Naziv natjecanja',
+            'competition_country': 'Država'
+        }
+    
+    teams = forms.ModelMultipleChoiceField(
+        queryset=Team.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        label='Momčadi'
+    )

@@ -10,6 +10,6 @@
     <form action="{% if form_action == 'edit' %} {% url 'editTeam' teamID %} {% else %} {% url 'createTeam' %} {% endif %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Pohrani">
+        <input type="submit" value="Spremi">
     </form>
 {% endblock %}

@@ -5,15 +5,35 @@
 
     <p class="match_details">Država: <b>{{ object.competition_country }}</b></p>
 
-    <br>
-    {% if matches_list %}
-        <div class="description competition">
-            <a href="#matches" onclick="openClose(1)">Utakmice</a>
-            <span></span>
-            <a href="#teams" onclick="openClose(2)">Momčadi</a>
-        </div>
+    {% if request.user.is_superuser %}
+    <p class="match_details grid-container" style="margin-top: 5%; margin-bottom: 1%;">
+        <span>
+            <a href="{% url 'editCompetition' object.id %}" style="color: black;">
+                <i class="fa fa-edit" style="font-size: 30px; color:black;"></i>
+                Ažuriraj natjecanje
+            </a>
+        </span>
+        <span></span>
+        <span>
+            <a href="{% url 'deleteCompetition' object.id %}" style="color: red;"
+                onclick="return confirm('Jeste li sigurni da želite obrisati natjecanje {{ object.competition_name }}?');"
+            >
+                <i class="fa fa-trash-o" style="font-size: 30px; color:red;"></i>
+                Izbriši natjecanje
+            </a>
+        </span>
+    </p>
+    {% endif %}
 
-        <div class="competitionMatches">
+    <br>
+    <div class="description competition">
+        <a href="#matches" onclick="openClose(1)">Utakmice</a>
+        <span></span>
+        <a href="#teams" onclick="openClose(2)">Momčadi</a>
+    </div>
+
+    <div class="competitionMatches">
+    {% if matches_list %}
         {% for match in matches_list %}
             <a href="{% url 'matchDetails' match.id %}" class="match_link">
                 <div class="match">
@@ -33,26 +53,32 @@
                 </div>
             </a>
         {% endfor %}
-        </div>
-
-        <div class="grid-container" style="display: none;">
-        {% for team in competition_teams %}
-            <a href="{% url 'teamDetails' team.id %}" class="match_link">
-                <div class="match">
-                    <h3>{{ team.team_name }}</h3>
-                    <p>{{ team.team_country }}</p>
-                </div>
-            </a>
-        {% endfor %}
-        </div>
     {% else %}
         <p class="description" style="text-align: center;">Nema odigranih utakmica</p>
+    {% endif %}
+    </div>
+
+    {% if competition_teams %}
+        <div class="grid-container hide" style="display: none;">
+            {% for team in competition_teams %}
+                <a href="{% url 'teamDetails' team.id %}" class="match_link">
+                    <div class="match">
+                        <h3>{{ team.team_name }}</h3>
+                        <p>{{ team.team_country }}</p>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="hide" style="display: none;">
+            <p class="description" style="text-align: center;">Nema momčadi</p>
+        </div>
     {% endif %}
 
     <script>
         function openClose(x) {
             const matches = document.getElementsByClassName("competitionMatches")[0];
-            const teams = document.getElementsByClassName("grid-container")[0];
+            const teams = document.getElementsByClassName("hide")[0];
 
             if (x==1) {
                 matches.style.display = 'block';

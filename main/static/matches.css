@@ -86,6 +86,10 @@
     margin-left: 3%;
 }
 
+.match_details span:hover {
+    text-decoration: underline;
+}
+
 .score_details a:link, .match_details a:link, h2 a:link {
     text-decoration: none;
     color: #4CAF50;
@@ -111,6 +115,10 @@ h2 a:visited {
     width: auto;
     text-align: center;
     padding: 20px 0;
+}
+
+.grid-container span {
+    text-align: center;
 }
 
 .competition {

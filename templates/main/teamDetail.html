@@ -16,19 +16,22 @@
     <p class="match_details">Stadion: <b>{{ object.team_stadium }}</b></p>
 
     {% if request.user.is_superuser %}
-    <p class="match_details">
-        <a href="{% url 'editTeam' object.id %}">
-            <i class="fa fa-edit" style="font-size: 30px; color:black;"></i>
-            Uredi podatke
-        </a>
-    </p>
-
-    <p class="match_details">
-        <a href="{% url 'deleteTeam' object.id %}"
-            onclick="return confirm('Jeste li sigurni da želite obrisati momčad {{ object.team_name }}?');"
-        >
-            <i class="fa fa-trash-o" style="font-size: 30px; color:red;"></i>
-        </a>
+    <p class="match_details grid-container" style="margin-top: 5%; margin-bottom: 1%;">
+        <span>
+            <a href="{% url 'editTeam' object.id %}" style="color: black;">
+                <i class="fa fa-edit" style="font-size: 30px; color:black;"></i>
+                Ažuriraj momčad
+            </a>
+        </span>
+        <span></span>
+        <span>
+            <a href="{% url 'deleteTeam' object.id %}" style="color: red;"
+                onclick="return confirm('Jeste li sigurni da želite obrisati momčad {{ object.team_name }}?');"
+            >
+                <i class="fa fa-trash-o" style="font-size: 30px; color:red;"></i>
+                Izbriši momčad
+            </a>
+        </span>
     </p>
     {% endif %}
 

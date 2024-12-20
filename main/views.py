@@ -5,6 +5,8 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
+from django.dispatch import receiver
+from django.contrib.auth.signals import user_logged_out
 from itertools import groupby
 from django.db.models import Q
 from . import forms
@@ -13,6 +15,10 @@ from main.models import *
 def is_user_admin(user):
     admin_group = Group.objects.get(name="Administrator") 
     return admin_group.user_set.filter(username=user).exists()
+
+@receiver(user_logged_out)
+def on_user_logged_out(sender, request, **kwargs):
+    messages.add_message(request, messages.INFO, 'Uspješna odjava!')
 
 
 class LatestMatches(LoginRequiredMixin, ListView):
@@ -183,12 +189,11 @@ def editTeam(request, teamID):
         form = forms.TeamForm(request.POST, instance=team)
 
         if form.is_valid():
-            team_name = form.cleaned_data['team_name']
             form.save()
 
             # add a success message
-            messages.success(request, 'Momčad "{}" je uspješno ažurirana!'.format(team_name))
-            return HttpResponseRedirect("/teams")
+            messages.success(request, 'Momčad "{}" je uspješno ažurirana!'.format(team.team_name))
+            return HttpResponseRedirect("/teams/{}".format(team.id))
     else:
         # populate the form with the chosen team's data
         form = forms.TeamForm(instance=team)
@@ -273,3 +278,65 @@ class CompetitionDetailed(LoginRequiredMixin, DetailView):
         context['matches_list'] = Match.objects.filter(match_competition__id = self.kwargs['pk']).order_by('-match_date')
         context['competition_teams'] = self.object.competition_teams.all()
         return context
+
+
+@user_passes_test(is_user_admin)
+def createCompetition(request):
+    if request.method == 'POST':
+        # create a form instance
+        form = forms.CompetitionForm(request.POST)
+
+        # check whether it's valid:
+        if form.is_valid():
+            competition_name = form.cleaned_data['competition_name']
+            competition = form.save()
+
+            # saving chosen teams
+            selected_teams = form.cleaned_data['teams']
+            competition.competition_teams.set(selected_teams)
+
+            # add a success message
+            messages.success(request, 'Natjecanje "{}" je uspješno dodano!'.format(competition_name))
+            return HttpResponseRedirect("/competitions")
+    else:
+        form = forms.CompetitionForm()
+    
+    return render(request, 'admin/competition_form.html', {'form': form, 'form_action': 'create'})
+
+
+@user_passes_test(is_user_admin)
+def editCompetition(request, competitionID):
+    competition = Competition.objects.get(id=competitionID)
+
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request
+        form = forms.CompetitionForm(request.POST, instance=competition)
+
+        if form.is_valid():
+            competition = form.save()
+
+            # saving chosen teams
+            selected_teams = form.cleaned_data['teams']
+            competition.competition_teams.set(selected_teams)
+
+            # add a success message
+            messages.success(request, 'Natjecanje "{}" je uspješno ažurirano!'.format(competition.competition_name))
+            return HttpResponseRedirect("/competitions/{}".format(competition.id))
+    else:
+        # populate the form with the chosen team's data
+        form = forms.CompetitionForm(instance=competition, initial={
+            'teams': competition.momcadi.all()  # This pre-selects the teams
+        })
+    
+    return render(request, 'admin/competition_form.html', {'form': form, 'form_action': 'edit', 'competitionID': competition.id})
+
+
+@user_passes_test(is_user_admin)
+def deleteCompetition(request, competitionID):
+    competition = Competition.objects.get(id=competitionID)
+    try:
+        competition.delete()
+        messages.success(request, 'Natjecanje "{}" je uspješno obrisano!'.format(competition.competition_name))
+        return redirect('allCompetitions')
+    except Team.DoesNotExist:
+        return redirect('allCompetitions')
