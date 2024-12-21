@@ -249,6 +249,57 @@ def TeamDetailed(request, pk):
     return render(request, "main/teamDetail.html", context)
 
 
+@user_passes_test(is_user_admin)
+def createMatch(request):
+    if request.method == 'POST':
+        # create a form instance
+        form = forms.MatchForm(request.POST)
+
+        # check whether it's valid:
+        if form.is_valid():
+            form.save()
+
+            # add a success message
+            messages.success(request, 'Utakmica je uspješno dodana!')
+            return HttpResponseRedirect("/matches")
+    else:
+        form = forms.MatchForm()
+    
+    return render(request, 'admin/match_form.html', {'form': form, 'form_action': 'create'})
+
+
+@user_passes_test(is_user_admin)
+def editMatch(request, matchID):
+    match = Match.objects.get(id=matchID)
+
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request
+        form = forms.MatchForm(request.POST, instance=match)
+
+        if form.is_valid():
+            form.save()
+
+            # add a success message
+            messages.success(request, 'Utakmica je uspješno ažurirana!')
+            return HttpResponseRedirect("/matches/{}".format(match.id))
+    else:
+        # populate the form with the chosen team's data
+        form = forms.MatchForm(instance=match)
+    
+    return render(request, 'admin/match_form.html', {'form': form, 'form_action': 'edit', 'matchID': match.id})
+
+
+@user_passes_test(is_user_admin)
+def deleteMatch(request, matchID):
+    match = Match.objects.get(id=matchID)
+    try:
+        match.delete()
+        messages.success(request, 'Utakmica je uspješno obrisana!')
+        return redirect('allMatches')
+    except Team.DoesNotExist:
+        return redirect('allMatches')
+
+
 
 class AllCompetitions(LoginRequiredMixin, ListView):
     template_name = 'main/competitions.html'
@@ -325,7 +376,7 @@ def editCompetition(request, competitionID):
     else:
         # populate the form with the chosen team's data
         form = forms.CompetitionForm(instance=competition, initial={
-            'teams': competition.momcadi.all()  # This pre-selects the teams
+            'teams': competition.competition_teams.all()  # load all teams into form
         })
     
     return render(request, 'admin/competition_form.html', {'form': form, 'form_action': 'edit', 'competitionID': competition.id})

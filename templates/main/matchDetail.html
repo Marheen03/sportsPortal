@@ -3,6 +3,14 @@
 {% block content %}
     <h1>Utakmica</h1>
 
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <div class="{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <h2 class="score_details">
         <a href="{% url 'teamDetails' object.match_team1.id %} ">{{ object.match_team1 }} </a>
 
@@ -20,4 +28,25 @@
     </p>
 
     <p class="match_details">Stadion: <b>{{ object.match_stadium }}</b></p>
+
+    
+    {% if request.user.is_superuser %}
+    <p class="match_details grid-container" style="margin-top: 5%; margin-bottom: 1%;">
+        <span>
+            <a href="{% url 'editMatch' object.id %}" style="color: black;">
+                <i class="fa fa-edit" style="font-size: 30px; color:black;"></i>
+                Ažuriraj utakmicu
+            </a>
+        </span>
+        <span></span>
+        <span>
+            <a href="{% url 'deleteMatch' object.id %}" style="color: red;"
+                onclick="return confirm('Jeste li sigurni da želite obrisati navedenu utakmicu?');"
+            >
+                <i class="fa fa-trash-o" style="font-size: 30px; color:red;"></i>
+                Izbriši utakmicu
+            </a>
+        </span>
+    </p>
+    {% endif %}
 {% endblock %}

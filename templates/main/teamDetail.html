@@ -15,6 +15,7 @@
 
     <p class="match_details">Stadion: <b>{{ object.team_stadium }}</b></p>
 
+
     {% if request.user.is_superuser %}
     <p class="match_details grid-container" style="margin-top: 5%; margin-bottom: 1%;">
         <span>
@@ -35,6 +36,7 @@
     </p>
     {% endif %}
 
+    
     <br>
     {% if grouped_matches.items %}
     <p class="description desc1">Utakmice:</p>

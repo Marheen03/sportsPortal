@@ -3,7 +3,16 @@
 {% block content %}
     <h1>Natjecanje: {{ object.competition_name }}</h1>
 
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <div class="{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <p class="match_details">Država: <b>{{ object.competition_country }}</b></p>
+
 
     {% if request.user.is_superuser %}
     <p class="match_details grid-container" style="margin-top: 5%; margin-bottom: 1%;">
@@ -25,6 +34,7 @@
     </p>
     {% endif %}
 
+    
     <br>
     <div class="description competition">
         <a href="#matches" onclick="openClose(1)">Utakmice</a>

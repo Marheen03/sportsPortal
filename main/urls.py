@@ -11,7 +11,10 @@ urlpatterns = [
     path('adminDashboard/deleteUser/<userID>', views.deleteUser, name='deleteUser'),
 
     path('matches/', views.AllMatches, name='allMatches'),
+    path('matches/create', views.createMatch, name='createMatch'),
     path('matches/<pk>', MatchDetailed.as_view(), name='matchDetails'),
+    path('matches/edit/<matchID>', views.editMatch, name='editMatch'),
+    path('matches/delete/<matchID>', views.deleteMatch, name='deleteMatch'),
 
     path('teams/', AllTeams.as_view(), name='allTeams'),
     path('teams/create', views.createTeam, name='createTeam'),

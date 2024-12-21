@@ -11,15 +11,23 @@
     </ul>
     {% endif %}
 
-    <form class="searchOption" method="get" action="{% url 'allMatches' %}" style="margin-bottom: -3%;">
-        <input 
-            type="text"
-            name="search"
-            placeholder="Pretraga..."
-            value="{{ search_query }}"
-        >
-        <button type="submit">Traži</button>
-    </form>
+    <div class="grid-container">
+        {% if request.user.is_superuser %}
+            <form action="{% url 'createMatch' %}">
+                <input type="submit" value="Dodaj utakmicu   &#43;" class="addButton"/>
+            </form>
+        {% endif %}
+        <span></span>
+        <form class="searchOption" method="get" action="{% url 'allMatches' %}" style="margin-bottom: -3%;">
+            <input 
+                type="text"
+                name="search"
+                placeholder="Pretraga..."
+                value="{{ search_query }}"
+            >
+            <button type="submit">Traži</button>
+        </form>
+    </div>
 
     {% if grouped_matches.items %}
         {% for competition, matches in grouped_matches.items %}

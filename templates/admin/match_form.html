@@ -1,0 +1,23 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>{% if form_action == 'edit' %}
+        Ažuriraj utakmicu
+    {% else %}
+        Dodaj utakmicu
+    {% endif %}</h1>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form action="{% if form_action == 'edit' %} {% url 'editMatch' matchID %} {% else %} {% url 'createMatch' %} {% endif %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Spremi">
+    </form>      
+{% endblock %}
