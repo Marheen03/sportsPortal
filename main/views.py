@@ -9,8 +9,12 @@ from django.dispatch import receiver
 from django.contrib.auth.signals import user_logged_out
 from itertools import groupby
 from django.db.models import Q
+
 from . import forms
 from main.models import *
+from rest_framework import generics, permissions
+from main.serializers import TeamSerializer
+
 
 def is_user_admin(user):
     admin_group = Group.objects.get(name="Administrator") 
@@ -247,6 +251,18 @@ def TeamDetailed(request, pk):
     }
          
     return render(request, "main/teamDetail.html", context)
+
+
+class teamList(LoginRequiredMixin, generics.ListCreateAPIView):
+    queryset = Team.objects.all().order_by('-team_name')
+    serializer_class = TeamSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class teamDetail(LoginRequiredMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = Team.objects.all().order_by('-team_name')
+    serializer_class = TeamSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 @user_passes_test(is_user_admin)
